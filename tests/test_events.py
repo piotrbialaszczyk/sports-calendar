@@ -1,6 +1,6 @@
 def create_event(client, payload):
     response = client.post("/events", json=payload)
-    assert response.status_code == 200
+    assert response.status_code == 201
     return response.json()
 
 def test_create_event_valid(client):
@@ -30,7 +30,7 @@ def test_create_event_valid(client):
 
     print(response.json())
 
-    assert response.status_code == 200
+    assert response.status_code == 201
 
     data = response.json()
 
