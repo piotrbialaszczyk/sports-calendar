@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session, joinedload
 
 from app.db.session import SessionLocal
@@ -20,7 +20,7 @@ def get_db():
         db.close()
 
 
-@router.post("/events", response_model=EventResponse)
+@router.post("/events", response_model=EventResponse, status_code=status.HTTP_201_CREATED)
 def create_event_endpoint(event: EventCreate, db: Session = Depends(get_db)):
     try:
         db_event = crud.create_event(db, event)
@@ -43,7 +43,7 @@ def create_event_endpoint(event: EventCreate, db: Session = Depends(get_db)):
 
         return db_event
 
-    except Exception as e:
+    except ValueError as e:
         db.rollback()
         raise HTTPException(status_code=400, detail=str(e))
 

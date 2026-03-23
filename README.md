@@ -241,3 +241,4 @@ Although the task description suggested prefixing foreign keys with an underscor
 * The solution prioritizes clarity, correctness, and maintainability
 * No frontend frameworks were used to keep the implementation transparent
 * Backend logic is separated into schemas, CRUD, and API layers
+* Create a .env file based on .env.example before running the application.
