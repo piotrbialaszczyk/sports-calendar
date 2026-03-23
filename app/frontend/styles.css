@@ -58,3 +58,8 @@ th {
     background-color: #f9f9f9;
     color: #aaa;
 }
+
+.event {
+    font-size: 12px;
+    margin-top: 3px;
+}
