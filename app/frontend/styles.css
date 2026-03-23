@@ -22,6 +22,21 @@ th {
     background-color: #f4f4f4;
 }
 
+nav {
+    margin-bottom: 20px;
+}
+
+nav a {
+    margin-right: 15px;
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
 .played {
     background-color: #e6ffe6;
 }

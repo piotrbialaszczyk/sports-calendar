@@ -28,7 +28,7 @@ async function loadEvents() {
         return a.date.localeCompare(b.date);
     });
 
-    const tbody = document.querySelector("#events-table tbody");
+    const tbody = document.querySelector("#events tbody");
     tbody.innerHTML = "";
 
     allEvents.forEach(event => {
