@@ -71,54 +71,52 @@ function getMondayIndex(day) {
 }
 
 function renderCalendar() {
-    const calendar = document.getElementById("calendar");
-    calendar.innerHTML = "";
-
     const title = document.getElementById("calendar-title");
+    const tbody = document.getElementById("calendar-body");
+    const thead = document.getElementById("calendar-weekdays");
+
+    tbody.innerHTML = "";
+    thead.innerHTML = "";
 
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
 
     title.textContent = `${year}-${String(month + 1).padStart(2, "0")}`;
 
-    const firstDay = new Date(year, month, 1);
-    const startDay = getMondayIndex(firstDay.getDay());
-
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
-
     const weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
+    // header
+    weekdays.forEach(day => {
+        const th = document.createElement("th");
+        th.textContent = day;
+        thead.appendChild(th);
+    });
+
+    const firstDay = new Date(year, month, 1);
+    const startDay = (firstDay.getDay() + 6) % 7;
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
 
     const eventsByDate = groupEventsByDate(allEvents);
 
-    // headers
-    weekdays.forEach(day => {
-        const header = document.createElement("div");
-        header.className = "day-header";
-        header.textContent = day;
-        calendar.appendChild(header);
-    });
+    let row = document.createElement("tr");
 
-    // empty cells before first day
+    // empty cells
     for (let i = 0; i < startDay; i++) {
-        const empty = document.createElement("div");
-        empty.className = "day other-month";
-        calendar.appendChild(empty);
+        row.appendChild(document.createElement("td"));
     }
 
-    // days of month
     for (let day = 1; day <= daysInMonth; day++) {
-        const cell = document.createElement("div");
-        cell.className = "day";
+        const cell = document.createElement("td");
 
         const dateStr = `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
 
-        let eventsHtml = "";
+        let html = `<strong>${day}</strong>`;
 
         if (eventsByDate[dateStr]) {
             const dayEvents = eventsByDate[dateStr]
                 .sort((a, b) => a.time.localeCompare(b.time));
 
-            eventsHtml = dayEvents.map(e => {
+            html += dayEvents.map(e => {
                 const home = e.home_team ? e.home_team.official_name : "[missing]";
                 const away = e.away_team ? e.away_team.official_name : "[missing]";
                 const result = e.result ? ` ${e.result.home_goals}:${e.result.away_goals}` : "";
@@ -129,12 +127,17 @@ function renderCalendar() {
             }).join("");
         }
 
-        cell.innerHTML = `
-            <div><strong>${day}</strong></div>
-            ${eventsHtml}
-        `;
+        cell.innerHTML = html;
+        row.appendChild(cell);
 
-        calendar.appendChild(cell);
+        if ((startDay + day) % 7 === 0) {
+            tbody.appendChild(row);
+            row = document.createElement("tr");
+        }
+    }
+
+    if (row.children.length > 0) {
+        tbody.appendChild(row);
     }
 }
 

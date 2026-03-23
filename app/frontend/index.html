@@ -23,7 +23,7 @@
     <tbody></tbody>
 </table>
 
-<h2>Calendar</h2>
+<h1>Calendar</h1>
 
 <div id="calendar-controls">
     <button onclick="prevMonth()">Prev</button>
@@ -31,7 +31,14 @@
     <button onclick="nextMonth()">Next</button>
 </div>
 
-<div id="calendar"></div>
+<div id="calendar">
+    <table>
+        <thead>
+            <tr id="calendar-weekdays"></tr>
+        </thead>
+        <tbody id="calendar-body"></tbody>
+    </table>
+</div>
 
 <script src="script.js"></script>
 
