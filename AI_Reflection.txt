@@ -1,0 +1,25 @@
+AI Reflection
+
+During this project I used an AI assistant (ChatGPT) as a supporting tool throughout the development process. The AI was used mainly to guide structure, suggest approaches, and help debug issues.
+
+I did not rely on AI to generate the entire solution. Instead, I worked step-by-step, verifying each part of the system (database, backend, tests, and frontend) before proceeding further. All code suggestions were reviewed, adapted, and tested to ensure correctness.
+
+AI was particularly helpful in:
+
+* structuring the project into layers (models, schemas, CRUD, API)
+* identifying common pitfalls (e.g. SQLite in-memory database behavior in tests)
+* improving test quality and avoiding weak assertions
+* handling edge cases in the seed script (inconsistent data, duplicates)
+* refining frontend logic and layout (calendar rendering and UX improvements)
+
+Key implementation decisions were made independently, including:
+
+* keeping the solution simple and avoiding unnecessary complexity
+* designing a normalized database schema (3NF)
+* enforcing validation rules at the schema level
+* making the seed script deterministic and robust
+* choosing a table-based calendar layout for better reliability and maintainability
+
+The final solution was tested both manually and through automated tests. AI was treated as a tool to accelerate development and improve quality, not as a replacement for understanding.
+
+This approach allowed me to build a complete and reliable application while maintaining full control over the design and correctness of the implementation.
