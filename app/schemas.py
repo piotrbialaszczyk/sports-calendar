@@ -1,5 +1,5 @@
-from pydantic import BaseModel, field_validator, model_validator
-from typing import Optional
+from pydantic import BaseModel, model_validator, ConfigDict
+from typing import Optional, Literal
 from datetime import date, time
 
 
@@ -12,8 +12,7 @@ class TeamBase(BaseModel):
 class TeamResponse(TeamBase):
     id: int
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class CompetitionBase(BaseModel):
@@ -23,8 +22,7 @@ class CompetitionBase(BaseModel):
 class CompetitionResponse(CompetitionBase):
     id: int
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class StageBase(BaseModel):
@@ -35,8 +33,7 @@ class StageBase(BaseModel):
 class StageResponse(StageBase):
     id: int
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class ResultBase(BaseModel):
@@ -48,14 +45,13 @@ class ResultBase(BaseModel):
 class ResultResponse(ResultBase):
     id: int
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class EventCreate(BaseModel):
     date: date
     time: time
-    status: str
+    status: Literal["scheduled", "played"]
     stadium: Optional[str] = None
 
     home_team: Optional[TeamBase] = None
@@ -92,5 +88,4 @@ class EventResponse(BaseModel):
 
     result: Optional[ResultResponse]
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
