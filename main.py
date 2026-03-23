@@ -1,23 +1,15 @@
-from fastapi import FastAPI, Depends
-from sqlalchemy.orm import Session
+from fastapi import FastAPI
 
-from app.db.session import SessionLocal
 from app.db.base import Base
 from app.db.session import engine
-from app.db import models
+from app import api
 
 
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+app.include_router(api.router)
 
 
 @app.get("/")
