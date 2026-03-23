@@ -1,6 +1,9 @@
 from sqlalchemy.orm import Session
 from app.db.models import Team, Competition, Stage, Event, Result
+from sqlalchemy.orm import joinedload
 
+
+ALLOWED_SORT_FIELDS = {"date", "time", "status"}
 
 def get_or_create_team(db: Session, team_data):
     if team_data is None:
@@ -73,3 +76,40 @@ def create_event(db: Session, event):
         db.add(db_result)
 
     return db_event
+
+def get_events(db, date=None, status=None, sort=None, limit=10, offset=0):
+    query = db.query(Event).options(
+        joinedload(Event.home_team),
+        joinedload(Event.away_team),
+        joinedload(Event.competition),
+        joinedload(Event.stage),
+        joinedload(Event.result),
+    )
+
+    if date:
+        query = query.filter(Event.date == date)
+
+    if status:
+        query = query.filter(Event.status == status)
+
+    if sort:
+        direction = "asc"
+        field_name = sort
+
+        if sort.startswith("-"):
+            direction = "desc"
+            field_name = sort[1:]
+
+        if field_name not in ALLOWED_SORT_FIELDS:
+            raise ValueError(f"Invalid sort field: {field_name}")
+
+        column = getattr(Event, field_name)
+
+        if direction == "desc":
+            column = column.desc()
+
+        query = query.order_by(column)
+
+    query = query.offset(offset).limit(limit)
+
+    return query.all()

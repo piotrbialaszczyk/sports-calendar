@@ -6,6 +6,9 @@ from app.db.models import Event
 from app.schemas import EventCreate, EventResponse
 from app import crud
 
+from typing import Optional
+from datetime import date
+
 router = APIRouter()
 
 
@@ -42,4 +45,26 @@ def create_event_endpoint(event: EventCreate, db: Session = Depends(get_db)):
 
     except Exception as e:
         db.rollback()
+        raise HTTPException(status_code=400, detail=str(e))
+
+@router.get("/events", response_model=list[EventResponse])
+def get_events_endpoint(
+    date: Optional[date] = None,
+    status: Optional[str] = None,
+    sort: Optional[str] = None,
+    limit: int = 10,
+    offset: int = 0,
+    db: Session = Depends(get_db),
+):
+    try:
+        events = crud.get_events(
+            db,
+            date=date,
+            status=status,
+            sort=sort,
+            limit=limit,
+            offset=offset,
+        )
+        return events
+    except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
