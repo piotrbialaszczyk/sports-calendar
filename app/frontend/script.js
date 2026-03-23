@@ -42,4 +42,65 @@ async function loadEvents() {
     });
 }
 
+let currentDate = new Date();
+
+function getMondayIndex(day) {
+    return (day + 6) % 7;
+}
+
+function renderCalendar() {
+    const calendar = document.getElementById("calendar");
+    calendar.innerHTML = "";
+
+    const title = document.getElementById("calendar-title");
+
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth();
+
+    title.textContent = `${year}-${String(month + 1).padStart(2, "0")}`;
+
+    const firstDay = new Date(year, month, 1);
+    const startDay = getMondayIndex(firstDay.getDay());
+
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    const weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
+    // headers
+    weekdays.forEach(day => {
+        const header = document.createElement("div");
+        header.className = "day-header";
+        header.textContent = day;
+        calendar.appendChild(header);
+    });
+
+    // empty cells before first day
+    for (let i = 0; i < startDay; i++) {
+        const empty = document.createElement("div");
+        empty.className = "day other-month";
+        calendar.appendChild(empty);
+    }
+
+    // days of month
+    for (let day = 1; day <= daysInMonth; day++) {
+        const cell = document.createElement("div");
+        cell.className = "day";
+
+        cell.innerHTML = `<div>${day}</div>`;
+
+        calendar.appendChild(cell);
+    }
+}
+
+function prevMonth() {
+    currentDate.setMonth(currentDate.getMonth() - 1);
+    renderCalendar();
+}
+
+function nextMonth() {
+    currentDate.setMonth(currentDate.getMonth() + 1);
+    renderCalendar();
+}
+
 loadEvents();
+renderCalendar();

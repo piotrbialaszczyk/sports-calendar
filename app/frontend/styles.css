@@ -29,3 +29,32 @@ th {
 .scheduled {
     background-color: #fff;
 }
+
+#calendar-controls {
+    margin: 20px 0;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+#calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+}
+
+.day-header {
+    font-weight: bold;
+    text-align: center;
+}
+
+.day {
+    border: 1px solid #ddd;
+    min-height: 80px;
+    padding: 5px;
+}
+
+.other-month {
+    background-color: #f9f9f9;
+    color: #aaa;
+}
