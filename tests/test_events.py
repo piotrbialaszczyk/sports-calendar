@@ -165,3 +165,28 @@ def test_get_events_pagination(client):
     data = response.json()
 
     assert len(data) == 2
+
+def test_get_event_by_id_success(client):
+    payload = {
+        "date": "2024-01-01",
+        "time": "10:00:00",
+        "status": "played",
+        "competition": {"name": "League"},
+        "stage": {"name": "Stage"},
+        "result": {"home_goals": 1, "away_goals": 0}
+    }
+
+    event = create_event(client, payload)
+
+    response = client.get(f"/events/{event['id']}")
+
+    assert response.status_code == 200
+    data = response.json()
+
+    assert data["id"] == event["id"]
+    assert data["status"] == "played"
+
+def test_get_event_by_id_not_found(client):
+    response = client.get("/events/999")
+
+    assert response.status_code == 404

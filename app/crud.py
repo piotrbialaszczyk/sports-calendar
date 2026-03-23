@@ -113,3 +113,17 @@ def get_events(db, date=None, status=None, sort=None, limit=10, offset=0):
     query = query.offset(offset).limit(limit)
 
     return query.all()
+
+def get_event_by_id(db, event_id):
+    return (
+        db.query(Event)
+        .options(
+            joinedload(Event.home_team),
+            joinedload(Event.away_team),
+            joinedload(Event.competition),
+            joinedload(Event.stage),
+            joinedload(Event.result),
+        )
+        .filter(Event.id == event_id)
+        .first()
+    )

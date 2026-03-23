@@ -68,3 +68,12 @@ def get_events_endpoint(
         return events
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
+
+@router.get("/events/{event_id}", response_model=EventResponse)
+def get_event(event_id: int, db: Session = Depends(get_db)):
+    event = crud.get_event_by_id(db, event_id)
+
+    if not event:
+        raise HTTPException(status_code=404, detail="Event not found")
+
+    return event
