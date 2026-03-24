@@ -86,7 +86,7 @@ python seed.py
 This will:
 
 * reset the database
-* load data from `data/sample.json`
+* load data from `sample.json`
 * normalize inconsistent input data
 * prevent duplicates
 
